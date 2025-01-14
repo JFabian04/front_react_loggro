@@ -14,14 +14,14 @@ import {
 import { useState, useEffect } from "react";
 import axiosInstance from "@/utils/axios";
 
-export function DataTable({ 
-    columns, 
-    apiUrl, 
-    initialPageSize = 10, 
+export function DataTable({
+    columns,
+    apiUrl,
+    initialPageSize = 10,
     filters = [],
     sortFieldParam = "sortField",
-    sortOrderParam = "sortOrder", 
-    searchParam = "search", 
+    sortOrderParam = "sortOrder",
+    searchParam = "search",
 }) {
     const [data, setData] = useState([]);
     const [total, setTotal] = useState(0);
@@ -30,11 +30,11 @@ export function DataTable({
     const [globalFilter, setGlobalFilter] = useState("");
     const [sorting, setSorting] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [filterValues, setFilterValues] = useState({}); 
+    const [filterValues, setFilterValues] = useState({});
 
     useEffect(() => {
         const sortField = sorting.length ? sorting[0].id : undefined;
-        const sortOrder = sorting.length ? (sorting[0].desc ? "DESC" : "ASC") : undefined;
+        const sortOrder = sorting.length ? (sorting[0].desc ? "desc" : "asc") : undefined;
 
         setIsLoading(true);
 
@@ -42,17 +42,17 @@ export function DataTable({
         const params = {
             page: pageIndex + 1,
             limit: pageSize,
-            [sortFieldParam]: sortField,  
-            [sortOrderParam]: sortOrder, 
-            [searchParam]: globalFilter,  
-            ...filterValues, 
+            [sortFieldParam]: sortField,
+            [sortOrderParam]: sortOrder,
+            [searchParam]: globalFilter,
+            ...filterValues,
         };
 
         axiosInstance
             .get(apiUrl, { params })
             .then((response) => {
                 setData(response.data.data);
-                setTotal(response.data.count);
+                setTotal(response.data.total);
                 setIsLoading(false);
             })
             .catch(() => setIsLoading(false));
@@ -91,9 +91,15 @@ export function DataTable({
         }));
     };
 
+    const getNestedValue = (obj, path) => {
+        return path
+            .split('.')
+            .reduce((acc, part) => (acc && acc[part] !== undefined ? acc[part] : ''), obj);
+    };
+
     return (
-        <div className="w-screen h-screen flex justify-center items-center">
-            <div className="w-full max-w-6xl rounded-md border overflow-hidden">
+        <div className="w-full  flex justify-center">
+            <div className="w-full max-w-7xl rounded-md border overflow-hidden">
                 <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-14">
                     {/* Search Input */}
                     {/* <div className="p-4 w-full sm:w-auto">
@@ -197,21 +203,24 @@ export function DataTable({
                                 </TableRow>
                             ) : table.getRowModel().rows?.length ? (
                                 table.getRowModel().rows.map((row) => (
-                                    <TableRow
-                                        key={row.id}
-                                        data-state={row.getIsSelected() && "selected"}
-                                    >
-                                        {row.getVisibleCells().map((cell) => (
-                                            <TableCell key={cell.id}>
-                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                            </TableCell>
-                                        ))}
+                                    <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                                        {row.getVisibleCells().map((cell) => {
+                                            const value = getNestedValue(row.original, cell.column.id);
+                                            return (
+                                                <TableCell key={cell.id}>
+                                                    {flexRender(cell.column.columnDef.cell, {
+                                                        ...cell.getContext(),
+                                                        value: value, 
+                                                    })}
+                                                </TableCell>
+                                            );
+                                        })}
                                     </TableRow>
                                 ))
                             ) : (
                                 <TableRow>
                                     <TableCell colSpan={columns.length} className="h-24 text-center">
-                                        No results.
+                                        No hay resultados.
                                     </TableCell>
                                 </TableRow>
                             )}
@@ -226,17 +235,17 @@ export function DataTable({
                         disabled={!table.getCanPreviousPage()}
                         className="px-4 py-2 border rounded-md"
                     >
-                        Previous
+                        Atrás
                     </button>
                     <span>
-                        Page {pageIndex + 1} of {table.getPageCount()}
+                        Pagina {pageIndex + 1} de {table.getPageCount()}
                     </span>
                     <button
                         onClick={() => table.nextPage()}
                         disabled={!table.getCanNextPage()}
                         className="px-4 py-2 border rounded-md"
                     >
-                        Next
+                        Siguiente
                     </button>
                 </div>
             </div>

@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Layout from './components/ui/Layout';
 import Login from './pages/Login';
 import 'typeface-poppins';
+import Historial from './pages/Historial';
 
 
 // import About from './pages/About';
@@ -16,6 +17,7 @@ const App = () => {
         <Route path='/' element={<Login />} />
         <Route path='/dashboard' element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path='historial' element={<Historial />} />
         </Route>
       </Routes>
     </BrowserRouter>
