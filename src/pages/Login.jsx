@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axiosInstance from '@/utils/axios';
-import { processValidationErrors } from '@/utils/vaidationError';
+import { processValidationErrors } from '@/utils/validationError';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -37,9 +37,15 @@ const Login = () => {
       });
 
       console.log('Login resp: ', response);
-      
+
       localStorage.setItem('token', response.data.data.accessToken);
-      navigate('/dashboard')
+      console.log(response.data.data.rol);
+
+      if (response.data.data.rol != 'admin') {
+        navigate('/dashboard')
+      } else {
+        navigate('/dashboard/historial')
+      }
     } catch (err) {
       setLoading(false)
       if (err.response?.data?.message) {
@@ -64,7 +70,7 @@ const Login = () => {
     }
 
     try {
-      const response = await axiosInstance.post('/users', {
+      const response = await axiosInstance.post('/users/register', {
         email,
         name,
         password,
@@ -100,7 +106,7 @@ const Login = () => {
         <div className="shadow-lg bg-gray-100/50 rounded p-2 flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
           <img
             className="w-full h-16"
-            src="/images/inlaze_cover.jpg"
+            src="/images/logo.png"
             alt="logo"
           />
         </div>
@@ -190,7 +196,7 @@ const Login = () => {
 
               <button
                 type="submit"
-                className="w-full flex items-center justify-center text-white bg-yellow-600 hover:bg-yellow-600/80 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="w-full flex items-center justify-center text-white bg-sky-600 hover:bg-sky-600/80 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
                 {loading ? (
                   <div role="status">

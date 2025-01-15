@@ -15,20 +15,22 @@ import {
 // Menu items.
 const items = [
     {
-        title: "Converter",
+        title: "Convertir a PNG",
         url: "/dashboard",
         icon: Image,
+        exception: ['admin'],
     },
     {
         title: "Historial",
         url: "/dashboard/historial",
         icon: Album,
+        exception: [],
     }
 ]
 
-export function AppSidebar() {
+export function AppSidebar({ data }) {
     return (
-        <Sidebar>
+        <Sidebar className="shadow-md">
             <SidebarContent>
                 <SidebarGroup>
                     <div className="h-60 bg-green-400 rounded-lg flex justify-center items-center">
@@ -41,14 +43,16 @@ export function AppSidebar() {
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {items.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <a href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </a>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
+                                data && !item.exception.includes(data.rol) ? (
+                                    < SidebarMenuItem key={item.title} className="my-2" >
+                                        <SidebarMenuButton asChild className="shadow-lg h-20 text-sky-700 hover:text-sky-600 hover:shadow-none text-[1.2em] bg-white font-bold">
+                                            <a href={item.url}>
+                                                <item.icon />
+                                                <span>{item.title}</span>
+                                            </a>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                ) : null
                             ))}
                         </SidebarMenu>
                     </SidebarGroupContent>
@@ -62,6 +66,6 @@ export function AppSidebar() {
                     </a>
                 </SidebarMenuButton>
             </SidebarFooter>
-        </Sidebar>
+        </Sidebar >
     )
 }

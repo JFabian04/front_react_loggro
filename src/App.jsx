@@ -1,26 +1,38 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter, Routes as RouterRoutes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Layout from './components/ui/Layout';
 import Login from './pages/Login';
 import 'typeface-poppins';
 import Historial from './pages/Historial';
-
-
-// import About from './pages/About';
-// import NotFound from './pages/NotFound';
+import { Loading } from './components/loading';
+import { AuthProvider, useAuth } from './hooks/authContext';
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Login />} />
-        <Route path='/dashboard' element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path='historial' element={<Historial />} />
-        </Route>
-      </Routes>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </BrowserRouter>
+  );
+};
+
+const AppRoutes = () => {
+  const { loading, data } = useAuth();
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  return (
+    <RouterRoutes>
+      <Route path='/' element={<Login />} />
+      <Route path='/dashboard' element={<Layout data={data && data.user} />}>
+        <Route index element={<Home />} />
+        <Route path='historial' element={<Historial />} />
+      </Route>
+    </RouterRoutes>
   );
 };
 

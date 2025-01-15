@@ -21,6 +21,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "filepond": "^4.32.6",
+    "filepond-plugin-file-validate-type": "^1.2.9",
     "filepond-plugin-image-exif-orientation": "^1.0.11",
     "filepond-plugin-image-preview": "^4.6.12",
     "lucide-react": "^0.471.0",
@@ -31,6 +32,7 @@
     "react-router-dom": "^7.1.1",
     "react-toastify": "^11.0.2",
     "tailwind-merge": "^2.6.0",
+    "tailwind-scrollbar": "^3.1.0",
     "tailwindcss-animate": "^1.0.7",
     "typeface-poppins": "^1.1.13"
   },

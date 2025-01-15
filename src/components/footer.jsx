@@ -1,8 +1,8 @@
 const Footer = () => {
     return (
-        <footer class="bg-gray-800 h-20  shadow">
-            <div class="w-full max-w-screen-xl mx-auto p-3 md:py-5">
-                <div class="sm:flex sm:items-center sm:justify-between">
+        <footer className="bg-gray-800 h-20  shadow">
+            <div className="w-full max-w-screen-xl mx-auto p-3 md:py-5">
+                <div className="sm:flex sm:items-center sm:justify-between">
                     <div className="flex space-x-4">
                         <a
                             href="https://twitter.com"
@@ -35,9 +35,9 @@ const Footer = () => {
                             </svg>
                         </a>
                     </div>
-                    <span class="block text-sm text-gray-400 sm:text-center">© 2025 <a href="https://www.linkedin.com/in/fabian-ramos-dev/" class="hover:underline">Fabián Ramos</a>. All Rights Reserved.</span>
+                    <span className="block text-sm text-gray-400 sm:text-center">© 2025 <a href="https://www.linkedin.com/in/fabian-ramos-dev/" className="hover:underline">Fabián Ramos</a>. All Rights Reserved.</span>
                 </div>
-                <hr class="border-gray-300 dark:border-gray-700 mt-3.5" />
+                <hr className="border-gray-400 dark:border-gray-700 mt-3.5" />
             </div>
         </footer>
 

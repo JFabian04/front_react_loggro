@@ -22,6 +22,7 @@ export function DataTable({
     sortFieldParam = "sortField",
     sortOrderParam = "sortOrder",
     searchParam = "search",
+    onFilterChange = () => { },
 }) {
     const [data, setData] = useState([]);
     const [total, setTotal] = useState(0);
@@ -85,10 +86,9 @@ export function DataTable({
 
     // Manejo dinámico de los filtros
     const handleFilterChange = (key, value) => {
-        setFilterValues(prevValues => ({
-            ...prevValues,
-            [key]: value,
-        }));
+        const newFilterValues = { ...filterValues, [key]: value };
+        setFilterValues(newFilterValues)
+        onFilterChange(newFilterValues);
     };
 
     const getNestedValue = (obj, path) => {
@@ -98,8 +98,8 @@ export function DataTable({
     };
 
     return (
-        <div className="w-full  flex justify-center">
-            <div className="w-full max-w-7xl rounded-md border overflow-hidden">
+        // <div className="w-full flex justify-center">
+            <div className="bg-white md:min-w-[900px] max-w-7xl rounded-md border overflow-hidden ">
                 <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-14">
                     {/* Search Input */}
                     {/* <div className="p-4 w-full sm:w-auto">
@@ -153,7 +153,7 @@ export function DataTable({
 
                     {/* Records Per Page Selector */}
                     <div className="p-4 w-full sm:w-auto">
-                        <label htmlFor="pageSize" className="block text-sm">Records per page</label>
+                        <label htmlFor="pageSize" className="block text-sm">Items por página</label>
                         <select
                             id="pageSize"
                             value={pageSize}
@@ -169,9 +169,9 @@ export function DataTable({
                 </div>
 
                 {/* Table container with scroll */}
-                <div className="overflow-x-auto h-[calc(100vh-400px)]">
+                <div className="overflow-x-auto max-h-[calc(100vh-400px)]  scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
                     <Table>
-                        <TableHeader>
+                        <TableHeader className="shadow">
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <TableRow key={headerGroup.id}>
                                     {headerGroup.headers.map((header) => (
@@ -195,22 +195,16 @@ export function DataTable({
                             ))}
                         </TableHeader>
                         <TableBody>
-                            {isLoading ? (
-                                <TableRow>
-                                    <TableCell colSpan={columns.length} className="h-24 text-center">
-                                        Loading...
-                                    </TableCell>
-                                </TableRow>
-                            ) : table.getRowModel().rows?.length ? (
+                            {table.getRowModel().rows?.length ? (
                                 table.getRowModel().rows.map((row) => (
-                                    <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                                    <TableRow key={row.id}>
                                         {row.getVisibleCells().map((cell) => {
                                             const value = getNestedValue(row.original, cell.column.id);
                                             return (
                                                 <TableCell key={cell.id}>
                                                     {flexRender(cell.column.columnDef.cell, {
                                                         ...cell.getContext(),
-                                                        value: value, 
+                                                        value, 
                                                     })}
                                                 </TableCell>
                                             );
@@ -225,6 +219,7 @@ export function DataTable({
                                 </TableRow>
                             )}
                         </TableBody>
+
                     </Table>
                 </div>
 
@@ -249,6 +244,6 @@ export function DataTable({
                     </button>
                 </div>
             </div>
-        </div>
+        //</div>
     );
 }
