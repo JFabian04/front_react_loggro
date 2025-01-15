@@ -1,8 +1,27 @@
-# React + Vite
+## Ejecutar el Proyecto Frontend (Desarrollado en REACT 18)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Incluye: 
+Estilos con Tailwind CSS
+Inicio de Sesión y Registro de usuario.
+Sección para subir la imagen a convertir.
+Sección para consultar imagenes subidas. (El administrador podrá ver todos los registros.
+Los usuarios solo podrán ver los registros creados por ellos)
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Instalar Dependencias NPM del proyecto:
+
+npm install
+
+2. Compilar (Opocional)
+npm run build
+
+3. Inciar proyecto.
+npm run dev
+npm run preview (Compilado)
+
+NOTA: Se incluye el .env en el repositorio para facilitar la ejecución.
+
+
+CREDENCIALES PARA ADMINISTRADOR:
+correo: admin@gmail.com
+password: admin123
